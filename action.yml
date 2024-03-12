@@ -60,9 +60,17 @@ runs:
         terraform plan $custom_plan_flags
         if ($terraformapply){
           terraform apply -auto-approve $custom_apply_flags
+
+          if ($LastExitCode -eq 1){
+            exit 1
+          }
         }
         if ($terraformdestroy){
           terraform apply -destroy -auto-approve $custom_destroy_flags
+
+          if ($LastExitCode -eq 1){
+            exit 1
+          }          
         }
         $StateExists = Test-Path -Path ./terraform.tfstate -PathType Leaf
         if ($StateExists){
