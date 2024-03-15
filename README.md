@@ -126,11 +126,11 @@ The action supports the following inputs:
 | Variable        | Description                                                                                                                             | Default |
 |-----------------|-----------------------------------------------------------------------------------------------------------------------------------------|---------|
 | `encryptionkey` | An encryption key to use when encrypting the statefile. Recommended to use a secret value.                                              |   N/A   |
+| `environment`         | Environment to use (dev, staging or prod).               | N/A  |
+| `terraformstatefile`         | Terraform statefile to use (terraformstatefile-dev, terraformstatefile-staging, terraformstatefile).               | N/A  |
 | `apply`         | (optional) Whether to run the `terraform apply` command.               | `true`  |
 | `custom_plan_flags`         | (optional) Add a custom flag to the `terraform plan` command.               | `''`  |
 | `custom_apply_flags`         | (optional) Add a custom flag to the `terraform apply` command.               | `''`  |
-| `environment`         | (required) Environment to use (dev, staging or prod).               | N/A  |
-| `terraformstatefile`         | (required) Terraform statefile to use (terraformstatefile-dev, terraformstatefile-staging, terraformstatefile).               | N/A  |
 
 ## License
 
