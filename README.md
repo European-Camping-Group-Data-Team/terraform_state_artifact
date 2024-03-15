@@ -20,7 +20,7 @@ Be aware that [Github delets artifacts older then 90 days](https://docs.github.c
 #### - :tada: Lather, rinse, repeat! :tada:
 
 
-## Usage
+## Usage v1
 
 ```yaml
 steps:
@@ -60,7 +60,7 @@ steps:
         custom_apply_flags: '-no-color'
 ```
 
-## Inputs
+## Inputs v1
 
 The action supports the following inputs:
 
@@ -70,6 +70,67 @@ The action supports the following inputs:
 | `apply`         | (optional) Whether to run the `terraform apply` command.               | `true`  |
 | `custom_plan_flags`         | (optional) Add a custom flag to the `terraform plan` command.               | `''`  |
 | `custom_apply_flags`         | (optional) Add a custom flag to the `terraform apply` command.               | `''`  |
+
+## Usage v2 (Environment support)
+
+```yaml
+steps:
+- uses: European-Camping-Group-Data-Team/terraform_state_artifact@v2
+    with:
+        encryptionkey: ${{ secrets.encryptionkey }}
+        environment: 'dev'
+        terraformstatefile: 'terraformstatefile-dev'
+```
+
+You can choose to skip `terraform apply`:
+
+```yaml
+steps:
+- uses: European-Camping-Group-Data-Team/terraform_state_artifact@v2
+    with:
+        encryptionkey: ${{ secrets.encryptionkey }}
+        apply: false
+        environment: 'prod'
+        terraformstatefile: 'terraformstatefile'
+```
+
+You can choose to add custom flags to `terraform plan`:
+
+```yaml
+steps:
+- uses: European-Camping-Group-Data-Team/terraform_state_artifact@v2
+    with:
+        encryptionkey: ${{ secrets.encryptionkey }}
+        apply: false
+        custom_plan_flags: '-refresh-only'
+        environment: 'prod'
+        terraformstatefile: 'terraformstatefile'
+```
+
+You can choose to add custom flags to `terraform apply`:
+
+```yaml
+steps:
+- uses: European-Camping-Group-Data-Team/terraform_state_artifact@v2
+    with:
+        encryptionkey: ${{ secrets.encryptionkey }}
+        custom_apply_flags: '-no-color'
+        environment: 'prod'
+        terraformstatefile: 'terraformstatefile'
+```
+
+## Inputs v2
+
+The action supports the following inputs:
+
+| Variable        | Description                                                                                                                             | Default |
+|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `encryptionkey` | An encryption key to use when encrypting the statefile. Recommended to use a secret value.                                              |   N/A   |
+| `apply`         | (optional) Whether to run the `terraform apply` command.               | `true`  |
+| `custom_plan_flags`         | (optional) Add a custom flag to the `terraform plan` command.               | `''`  |
+| `custom_apply_flags`         | (optional) Add a custom flag to the `terraform apply` command.               | `''`  |
+| `environment`         | (required) Environment to use (dev, staging or prod).               | `''`  |
+| `terraformstatefile`         | (required) Terraform statefile to use (terraformstatefile-dev, terraformstatefile-staging, terraformstatefile).               | `''`  |
 
 ## License
 
