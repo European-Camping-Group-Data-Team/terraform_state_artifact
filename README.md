@@ -129,8 +129,8 @@ The action supports the following inputs:
 | `apply`         | (optional) Whether to run the `terraform apply` command.               | `true`  |
 | `custom_plan_flags`         | (optional) Add a custom flag to the `terraform plan` command.               | `''`  |
 | `custom_apply_flags`         | (optional) Add a custom flag to the `terraform apply` command.               | `''`  |
-| `environment`         | (required) Environment to use (dev, staging or prod).               | `''`  |
-| `terraformstatefile`         | (required) Terraform statefile to use (terraformstatefile-dev, terraformstatefile-staging, terraformstatefile).               | `''`  |
+| `environment`         | (required) Environment to use (dev, staging or prod).               | N/A  |
+| `terraformstatefile`         | (required) Terraform statefile to use (terraformstatefile-dev, terraformstatefile-staging, terraformstatefile).               | N/A  |
 
 ## License
 
