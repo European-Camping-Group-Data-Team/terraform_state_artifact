@@ -5,6 +5,10 @@ inputs:
   encryptionkey:
     description: 'Used to read artifact and as a key to encrypt and decrypt the state file artifact'
     required: true
+  upload:
+    description: 'upload state file'
+    required: false
+    default: ''
   apply:
     description: 'terraform apply'
     required: false
@@ -40,6 +44,14 @@ runs:
         $environment = "${{ inputs.environment }}"
         $terraformstatefile = "${{ inputs.terraformstatefile }}"
         Write-Host "Use terraformstatefile = $terraformstatefile"
+        $terraformupload = "${{ inputs.upload }}"
+        if ($terraformupload -eq "true"){
+          Write-Host "Use terraformstatefile = $terraformstatefile"
+          Copy-Item "./$terraformstatefile" ./terraform.tfstate
+          openssl enc -in ./terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate.enc
+          exit 0
+        }
+
         $Repo = "${{ github.repository }}"
         $BaseUri = "https://api.github.com"
         $ArtifactUri = "$BaseUri/repos/$Repo/actions/artifacts"
