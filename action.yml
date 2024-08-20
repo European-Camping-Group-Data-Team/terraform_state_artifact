@@ -35,21 +35,25 @@ inputs:
   terraformstatefile:
     description: 'Terraformstatefile name'
     required: true
+  terraformuploadfile:
+    description: 'Terraformuploadfile name'
+    required: false
 runs:
   using: "composite"
   steps:
     - uses: hashicorp/setup-terraform@v3
     - id: terraform
       run: |
-        $environment = "${{ inputs.environment }}"
-        $terraformstatefile = "${{ inputs.terraformstatefile }}"
         $terraformupload = "${{ inputs.upload }}"
         if ($terraformupload -eq "true"){
-          Write-Host "Upload from = ./state/$terraformstatefile"
-          Copy-Item "./state/$terraformstatefile" ./terraform.tfstate
+          $terraformuploadfile = "${{ inputs.terraformuploadfile }}"
+          Write-Host "Upload from = ./state/$terraformuploadfile"
+          Copy-Item "./state/$terraformuploadfile" ./terraform.tfstate
           openssl enc -in ./terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate.enc
           exit 0
         }
+        $environment = "${{ inputs.environment }}"
+        $terraformstatefile = "${{ inputs.terraformstatefile }}"
         Write-Host "Use terraformstatefile = $terraformstatefile"
         $Repo = "${{ github.repository }}"
         $BaseUri = "https://api.github.com"
