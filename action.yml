@@ -47,7 +47,7 @@ runs:
         $terraformupload = "${{ inputs.upload }}"
         if ($terraformupload -eq "true"){
           Write-Host "Use terraformstatefile = $terraformstatefile"
-          Copy-Item "./$terraformstatefile" ./terraform.tfstate
+          Copy-Item "./state/$terraformstatefile" ./terraform.tfstate
           openssl enc -in ./terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate.enc
           exit 0
         }
