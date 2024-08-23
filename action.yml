@@ -89,12 +89,13 @@ runs:
           terraform apply -auto-approve -var-file="$path" $custom_apply_flags
 
           $ExitCode = $LastExitCode
-          $StateExists = Test-Path -Path ./terraform.tfstate -PathType Leaf
-          if ($StateExists){
-            openssl enc -in ./terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate.enc
-          }
 
           if ($ExitCode -eq 1){
+            $StateExists = Test-Path -Path ./terraform.tfstate -PathType Leaf
+            if ($StateExists){
+              openssl enc -in ./terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate.enc
+            }
+
             exit 1
           }
         }
@@ -102,15 +103,21 @@ runs:
           terraform apply -destroy -auto-approve -var-file="$path" $custom_destroy_flags
 
           $ExitCode = $LastExitCode
-          $StateExists = Test-Path -Path ./terraform.tfstate -PathType Leaf
-          if ($StateExists){
-            openssl enc -in ./terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate.enc
-          }
 
           if ($ExitCode -eq 1){
+            $StateExists = Test-Path -Path ./terraform.tfstate -PathType Leaf
+            if ($StateExists){
+              openssl enc -in ./terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate.enc
+            }
+
             exit 1
           }
         }
+        $StateExists = Test-Path -Path ./terraform.tfstate -PathType Leaf
+        if ($StateExists){
+          openssl enc -in ./terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate.enc
+        }
+
       shell: pwsh
     - name: Archive artifacts
       if: success() || failure()
